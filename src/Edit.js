@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import useFetch from "./useFetch";
 import axios from "axios";
@@ -29,19 +29,29 @@ const Create = () => {
       });
   };
 
+  useEffect(() => {
+    if (data) {
+      setName(data.name);
+      setUsername(data.username);
+      setEmail(data.email);
+      setCity(data.address.city);
+      setPhone(data.phone);
+      setCompany(data.company.name);
+    }
+  }, [data]);
+
   return (
     <div className="create">
       {isPending && <div>Loading...</div>}
       {error && <div>{error}</div>}
       {data && (
         <form onSubmit={handleSubmit}>
-          <h2>Edit - {data.name}</h2>
+          <h2>Edit - {name}</h2>
           <label>Name:</label>
           <input
             type="text"
             required
             value={name}
-            placeholder={data.name}
             onChange={(e) => setName(e.target.value)}
           />
           <label>Username:</label>
@@ -49,7 +59,6 @@ const Create = () => {
             type="text"
             required
             value={username}
-            placeholder={data.username}
             onChange={(e) => setUsername(e.target.value)}
           />
           <label>Email:</label>
@@ -57,7 +66,6 @@ const Create = () => {
             type="email"
             required
             value={email}
-            placeholder={data.email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <label>City:</label>
@@ -65,7 +73,6 @@ const Create = () => {
             type="text"
             required
             value={city}
-            placeholder={data.address.city}
             onChange={(e) => setCity(e.target.value)}
           />
           <label>Phone:</label>
@@ -73,7 +80,6 @@ const Create = () => {
             type="text"
             required
             value={phone}
-            placeholder={data.phone}
             onChange={(e) => setPhone(e.target.value)}
           />
           <label>Company Name:</label>
@@ -81,7 +87,6 @@ const Create = () => {
             type="text"
             required
             value={company}
-            placeholder={data.company.name}
             onChange={(e) => setCompany(e.target.value)}
           />
           <button>Update Blog</button>
